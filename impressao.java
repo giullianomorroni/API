@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 import java.awt.print.Book;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
-import java.awt.print.<WBR>PrinterException;
+import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,10 +39,10 @@ public class ImpressoraDemo {
 	public static void criarFilaImpressao(List arquivos) throws IOException, PrinterException {
 		System.out.println("Iniciando impressão fisica");
 		PrintService impressora = null;
-		PrintService[] impressoras = PrinterJob.<WBR>lookupPrintServices(); //Lista de todas impressoras instaladas no seu PC.
+		PrintService[] impressoras = PrinterJob.lookupPrintServices(); //Lista de todas impressoras instaladas no seu PC.
 		
 		for (PrintService ps : impressoras) {
-			if (ps.getName().contains(<WBR>nomeImpressora)) {
+			if (ps.getName().contains(nomeImpressora)) {
 				impressora = ps; //A impressora desejada.
 				break;
 			}
@@ -52,24 +52,24 @@ public class ImpressoraDemo {
    	        * Abaixo é criado um "job" de impressão, e definido a impressora e a quantidade de vias.
 		 */
 		PrinterJob jobDeImpressao = PrinterJob.getPrinterJob();
-		jobDeImpressao.<WBR>setPrintService(impressora);
-		jobDeImpressao.setCopies(<WBR>quantidadeDeVias);
+		jobDeImpressao.setPrintService(impressora);
+		jobDeImpressao.setCopies(quantidadeDeVias);
 
 		for (File arquivo : arquivos) {
 			FileInputStream fis = new FileInputStream(arquivo);
 			FileChannel fc = fis.getChannel();
-			ByteBuffer bb = fc.map(FileChannel.MapMode.<WBR>READ_ONLY, 0, fc.size());
+			ByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
 
 
 			PDFFile pdfGerado = new PDFFile(bb);
 			ArquivoImpressao arquivoParaImpressao = new ArquivoImpressao(pdfGerado);
 			PageFormat defaultPage = jobDeImpressao.defaultPage();
 			PageFormat formatoDaPagina = defaultPage;
-			jobDeImpressao.setJobName(<WBR>arquivo.getName());
+			jobDeImpressao.setJobName(arquivo.getName());
 
 			Book documento = new Book();
-			documento.append(<WBR>arquivoParaImpressao, formatoDaPagina, pdfGerado.getNumPages());
-			jobDeImpressao.setPageable(<WBR>documento);
+			documento.append(arquivoParaImpressao, formatoDaPagina, pdfGerado.getNumPages());
+			jobDeImpressao.setPageable(documento);
 		        jobDeImpressao.print();
 		}
 		System.out.println("Impressão finalizada");
@@ -78,7 +78,7 @@ public class ImpressoraDemo {
 
 /**
  * Esta classe monta o arquivo PDF num formato específicio do framework
- * PDF-Rendererer {@link PDFRendererer <a href="http://java.net/projects/pdf-renderer" target="_blank">http://java.net/projects/pdf-<WBR>renderer</a>}. Este framework
+ * PDF-Rendererer {@link PDFRendererer <a href="http://java.net/projects/pdf-renderer" target="_blank">http://java.net/projects/pdf-renderer</a>}. Este framework
  * foi desenvolvido pela equipe Sun para suprir a falta de blibliotecas disponíveis 
  * para integração do Java com arquivos PDF.
  *  
@@ -97,7 +97,7 @@ class ArquivoImpressao implements Printable {
 		int numeroDePaginas = indice + 1;
 		if ((numeroDePaginas >= 1) && (numeroDePaginas <= arquivoPDF.getNumPages())) {
 			Graphics2D grafico2D = (Graphics2D) grafico;
-			PDFPage pagina = arquivoPDF.getPage(<WBR>numeroDePaginas);
+			PDFPage pagina = arquivoPDF.getPage(numeroDePaginas);
 
 			/* Define o tamanho da página e da área de impressão. */
 			Rectangle imgbounds = new Rectangle(10,30,580,800);
