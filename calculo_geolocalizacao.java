@@ -9,19 +9,24 @@
  */
 public static Map<Integer, Double> calcularQuadrante(Double latitude, Double longitude, Double distancia){
 	Map<Integer, Double> quadrante = new HashMap<Integer, Double>();
+	 
+	//O correto seria 111.00 que é a média da conversão de uma unidade DD para km...mas esse valor funciona com mais precisão
+	Double kilometroEmGrau = 152.58;
 
-	//Converte para metros
-	distancia = distancia/1000;
+	/*
+	 * Regra de três (com exemplo de 20 Km)
+	 * 152.58   100%
+	 * ------ = ---
+	 *   20      x
+	 */
+	Double x = (distanciaKm * 100) / kilometroEmGrau;
+	x = x/100;
 
-	//Converte a distancia em graus (cada grau equivale a 111.12Km)
-	distancia = (distancia / 111.12);
-	Double latitudePonto1 = new Double(latitude + distancia);
-	Double latitudePonto2 = new Double(latitude - distancia);
-	Double longitudePonto1 = new Double(longitude + distancia);
-	Double longitudePonto2 = new Double(longitude - distancia);
-	System.out.println("Pontos de interesse estão no quadrante ");
-	System.out.println("INI: " +latitudePonto1 + " ,  " + longitudePonto1);
-	System.out.println("FIM: " + latitudePonto2 + " , " + longitudePonto2);
+	Double latitudePonto1 = new Double(latitude + x);
+	Double longitudePonto1 = new Double(longitude + x);
+
+	Double latitudePonto2 = new Double(latitude - x);
+	Double longitudePonto2 = new Double(longitude - x);
 
 	//Como estamos trabalhando com valores negativos e positivos a ordem interessa
 	if(latitudePonto1 < 0){
@@ -31,6 +36,7 @@ public static Map<Integer, Double> calcularQuadrante(Double latitude, Double lon
 		quadrante.put(1, latitudePonto1);
 		quadrante.put(2, latitudePonto2);
 	}
+
 	if(longitudePonto2 < 0){
 		quadrante.put(3, longitudePonto2);
 		quadrante.put(4, longitudePonto1);
@@ -38,6 +44,7 @@ public static Map<Integer, Double> calcularQuadrante(Double latitude, Double lon
 		quadrante.put(3, longitudePonto1);
 		quadrante.put(4, longitudePonto2);
 	}
+
 	return quadrante;
 }
 
